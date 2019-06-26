@@ -1,8 +1,13 @@
+require 'forwardable'
 class Yen
+  extend Forwardable
+
+  delegate [:tax_rate] => :@tax
 
   def initialize(num)
     @money = num
     @with_tax = false
+    @tax = Tax.new
   end
 
   def with_tax?
