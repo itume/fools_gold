@@ -6,13 +6,14 @@ RSpec.describe FoolsGold do
   describe "normal tax" do
     describe "with_tax?" do
       let(:yen) {Yen.new(100)}
+      subject {yen.with_tax?}
       it "初期状態なら税抜きであること" do
-        expect(yen.with_tax?).to eq(false)
+        is_expected.to be false
       end
 
       it "税込みに変更すると税込みになること" do
         yen.with_tax!
-        expect(yen.with_tax?).to eq(true)
+        is_expected.to be true
       end
     end
   end
