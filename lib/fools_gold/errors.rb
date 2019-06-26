@@ -1,0 +1,1 @@
+class DoubleTaxaionError < StandardError; end
