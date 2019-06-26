@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["itume"]
   spec.email         = ["jem90ham@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = "gem for Japanese consumption tax"
+  spec.description   = "Calculate Japanese complicated consumption tax"
+  spec.homepage      = "https://github.com/itume/fools_gold"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

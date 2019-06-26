@@ -1,8 +1,5 @@
 # FoolsGold
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/fools_gold`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
 
 ## Installation
 
@@ -22,7 +19,72 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Install fools_gold, You can use Yen class.
+Yen is the currency of Japan.
+
+```
+ichi_man_yen = Yen.new(10_000)
+```
+
+Yen has methods for calculate consumption tax.
+````
+ichi_man_yen.with_tax
+ichi_man_yen.without_tax
+````
+
+Yen instance keeps the state with or without tax.
+Default value is "without tax" (Beacause I don't like any tax.)
+You can change tax state with "!" methods
+```
+ichi_man_yen.with_tax?
+#=> true
+
+# "!"method changes tax state
+ichi_man_yen.without_tax!
+ichi_man_yen.with_tax?
+#=> false
+ichi_man_yen.without_tax?
+#=> true
+
+# if state is without_tax and call without_tax!, raise TaxEvationError
+ichi_man_yen.without_tax!
+#=>TaxEvationError
+
+# if state is with_tax and call with_tax!, raise DoubleTaxaionError
+ichi_man_yen.with_tax!
+ichi_man_yen.with_tax?
+#=> true
+ichi_man_yen.with_tax!
+#=>DoubleTaxaionError
+```
+
+Yen instance has consumption tax rate. This rate uses tax calculation.
+Default tax rate is now 8%.
+```
+ichi_man_yen.tax_rate
+#=> 8
+```
+
+In Oct.1 2019, Japanese government will introduce reduced consumption tax rate.
+fools_gold can calculate reduced tax.
+```
+ichi_man_yen.with_reduced_tax
+ichi_man_yen.without_reduced_tax
+ichi_man_yen.with_reduced_tax!
+ichi_man_yen.without_reduced_tax!
+ichi_man_yen.with_reduced_tax?
+ichi_man_yen.without_reduced_tax?
+```
+So, from Oct.1 2019, default tax rate changes to 10%.
+Reduced tax means set tax rate to 8%.
+```
+ichi_man_yen.tax_rate
+#=> 10
+ichi_man_yen.with_reduced_tax!
+ichi_man_yen.tax_rate
+#=> 8
+```
+
 
 ## Development
 
