@@ -17,4 +17,9 @@ class Yen
   def without_tax?
     !@with_tax
   end
+
+  def without_tax!
+    raise TaxEvationError unless @with_tax
+    @with_tax = false
+  end
 end

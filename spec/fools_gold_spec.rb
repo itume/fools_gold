@@ -40,5 +40,17 @@ RSpec.describe FoolsGold do
         expect{yen.with_tax!}.to raise_error(DoubleTaxaionError)
       end
     end
+
+    describe "without_tax!" do
+      it "非課税の状態で税抜きにすると脱税になること" do
+        expect{yen.without_tax!}.to raise_error(TaxEvationError)
+      end
+
+      it "課税状態なら税抜きにできること" do
+        yen.with_tax!
+        yen.without_tax!
+        expect(yen.without_tax?).to be true
+      end
+    end
   end
 end
