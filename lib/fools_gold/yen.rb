@@ -34,4 +34,9 @@ class Yen
     raise TaxEvationError unless @with_tax
     @with_tax = false
   end
+
+  def without_tax
+    return @money unless @with_tax
+    (BigDecimal(@money) / BigDecimal(((100 + @tax.tax_rate) / 100.0).to_s)).to_i
+  end
 end

@@ -60,6 +60,18 @@ RSpec.describe FoolsGold do
           expect(yen.with_tax).to eq(100)
         end
       end
+
+      describe "without_tax" do
+        let(:yen){Yen.new(108)}
+        it "課税状態であれば税抜き金額が返ること" do
+          yen.with_tax!
+          expect(yen.without_tax).to eq(100)
+        end
+
+        it "課税状態でなければそのままの金額が返ること" do
+          expect(yen.without_tax).to eq(108)
+        end
+      end
     end
   end
 end
