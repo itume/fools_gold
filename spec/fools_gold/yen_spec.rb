@@ -72,6 +72,17 @@ RSpec.describe FoolsGold do
           expect(yen.without_tax).to eq(108)
         end
       end
+
+      describe "with_reduced_tax" do
+        it "課税状態でなければ軽減税率で課税した金額が返ること" do
+          expect(yen.with_reduced_tax).to eq(108)
+        end
+
+        it "課税状態であればそのままの金額が返ること" do
+          yen.with_tax!
+          expect(yen.with_reduced_tax).to eq(100)
+        end
+      end
     end
   end
 end
