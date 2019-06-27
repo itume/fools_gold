@@ -1,4 +1,6 @@
 require 'forwardable'
+require 'bigdecimal'
+
 class Yen
   extend Forwardable
 
@@ -17,6 +19,11 @@ class Yen
   def with_tax!
     raise DoubleTaxaionError if @with_tax
     @with_tax = true
+  end
+
+  def with_tax
+    return @money if @with_tax
+    (BigDecimal(@money) * BigDecimal(((100 + @tax.tax_rate) / 100.0).to_s)).to_i
   end
 
   def without_tax?
