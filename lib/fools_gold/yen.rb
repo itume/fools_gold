@@ -6,10 +6,11 @@ class Yen
 
   delegate [:tax_rate, :reduced_tax_rate] => :@tax
 
-  def initialize(num)
+  def initialize(num, rounding_method = :floor)
     @money = num
     @with_tax = false
     @tax = Tax.new
+    @rounding_method = rounding_method
   end
 
   def with_tax?
@@ -52,11 +53,24 @@ class Yen
 
   def calc_tax_included(tax_rate)
     return @money if @with_tax
-    (BigDecimal(@money) * BigDecimal((1 + tax_rate).to_s)).to_i
+    bd = (BigDecimal(@money) * BigDecimal((1 + tax_rate).to_s))
+    rounding(bd)
   end
 
   def calc_tax_excluded(tax_rate)
     return @money unless @with_tax
-    (BigDecimal(@money) / BigDecimal((1 + tax_rate).to_s)).to_i
+    bd = (BigDecimal(@money) / BigDecimal((1 + tax_rate).to_s))
+    rounding(bd)
+  end
+
+  def rounding(big_decimal)
+    case @rounding_method
+    when :floor
+      big_decimal.floor.to_i
+    when :ceil
+      big_decimal.ceil.to_i
+    when :round
+      big_decimal.round.to_i
+    end
   end
 end

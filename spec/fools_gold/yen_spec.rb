@@ -51,6 +51,21 @@ RSpec.describe FoolsGold do
       end
 
       describe "with_tax" do
+        context "端数処理" do
+          it "初期状態では切り捨てになること" do
+            expect(Yen.new(98).with_tax).to eq(105)
+          end
+          it ":floorオプションを指定すると切り捨てになること" do
+            expect(Yen.new(98, :floor).with_tax).to eq(105)
+          end
+          it ":ceilオプションを指定すると切り上げになること" do
+            expect(Yen.new(98, :ceil).with_tax).to eq(106)
+          end
+          it ":roundオプションを指定すると四捨五入になること" do
+            expect(Yen.new(98, :round).with_tax).to eq(106)
+            expect(Yen.new(93, :round).with_tax).to eq(100)
+          end
+        end
         context "2019年10月１日以前" do
           let(:yen) {Yen.new(100)}
           it "課税状態でなければ8%課税した金額が返ること" do
