@@ -9,14 +9,14 @@ RSpec.describe FoolsGold do
     context "2019年10月1日以前" do
       it "8%であること" do
         allow(TaxDate).to receive(:today).and_return(Date.new(2019,9,30))
-        is_expected.to eq 8
+        is_expected.to eq 0.08
       end
     end
 
     context "2019年10月１日以降" do
       it "10%であること" do
         allow(TaxDate).to receive(:today).and_return(Date.new(2019,10,1))
-        is_expected.to eq 10
+        is_expected.to eq 0.1
       end
     end
   end
@@ -33,7 +33,7 @@ RSpec.describe FoolsGold do
     context "2019年10月１日以降" do
       it "8%であること" do
         allow(TaxDate).to receive(:today).and_return(Date.new(2019,10,1))
-        expect(yen.reduced_tax_rate).to eq 8
+        expect(yen.reduced_tax_rate).to eq 0.08
       end
     end
   end

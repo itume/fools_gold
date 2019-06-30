@@ -62,7 +62,7 @@ Yen instance has consumption tax rate. This rate uses tax calculation.
 Default tax rate is now 8%.
 ```
 ichi_man_yen.tax_rate
-#=> 8
+#=> 0.08
 ```
 
 In Oct.1 2019, Japanese government will introduce reduced consumption tax rate.
