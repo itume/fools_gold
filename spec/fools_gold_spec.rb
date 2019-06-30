@@ -38,8 +38,8 @@ RSpec.describe FoolsGold do
     end
   end
 
-  describe "" do
-    it "" do
+  describe "settingslogic" do
+    it "設定変更を行うことで強制的に新税適用できること" do
       class Settings < Settingslogic
         require "tempfile"
         text = <<-EOS
@@ -51,7 +51,9 @@ RSpec.describe FoolsGold do
         tf.open
         source tf.path
       end
+      allow(TaxDate).to receive(:today).and_return(Date.new(2019,9,30))
       expect(Yen.new(100).with_tax).to eq(110)
+      expect(Yen.new(100).with_reduced_tax).to eq(108)
     end
   end
 end
