@@ -10,7 +10,7 @@ module TaxDate
   end
 
   def day_of_raise_10_percent?
-    day_of_raise_10_percent > today
+    today >= day_of_raise_10_percent
   end
 
   module_function :today, :day_of_raise_10_percent, :day_of_raise_10_percent?

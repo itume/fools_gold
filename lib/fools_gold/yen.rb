@@ -4,7 +4,7 @@ require 'bigdecimal'
 class Yen
   extend Forwardable
 
-  delegate [:tax_rate] => :@tax
+  delegate [:tax_rate, :reduced_tax_rate] => :@tax
 
   def initialize(num)
     @money = num
