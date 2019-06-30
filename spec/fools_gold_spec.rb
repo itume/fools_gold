@@ -37,4 +37,21 @@ RSpec.describe FoolsGold do
       end
     end
   end
+
+  describe "" do
+    it "" do
+      class Settings < Settingslogic
+        require "tempfile"
+        text = <<-EOS
+        defaults: &defaults
+        row_inforced: true
+        EOS
+        tf = Tempfile.new("test.yaml")
+        tf.print(text)
+        tf.open
+        source tf.path
+      end
+      expect(Yen.new(100).with_tax).to eq(110)
+    end
+  end
 end
