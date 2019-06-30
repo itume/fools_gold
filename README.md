@@ -79,10 +79,10 @@ So, from Oct.1 2019, default tax rate changes to 10%.
 Reduced tax means set tax rate to 8%.
 ```
 ichi_man_yen.tax_rate
-#=> 10
+#=> 0.1
 ichi_man_yen.with_reduced_tax!
 ichi_man_yen.tax_rate
-#=> 8
+#=> 0.08
 ```
 
 
