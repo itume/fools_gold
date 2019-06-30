@@ -23,7 +23,7 @@ class Yen
 
   def with_tax
     return @money if @with_tax
-    (BigDecimal(@money) * BigDecimal((1 + @tax.tax_rate).to_s)).to_i
+    calc_tax_included(@tax.tax_rate)
   end
 
   def without_tax?
@@ -37,11 +37,21 @@ class Yen
 
   def without_tax
     return @money unless @with_tax
-    (BigDecimal(@money) / BigDecimal((1 + @tax.tax_rate).to_s)).to_i
+    calc_tax_excluded(@tax.tax_rate)
   end
 
   def with_reduced_tax
     return @money if @with_tax
-    (BigDecimal(@money) * BigDecimal((1 + @tax.reduced_tax_rate).to_s)).to_i
+    calc_tax_included(@tax.reduced_tax_rate)
+  end
+
+  private
+
+  def calc_tax_included(tax_rate)
+    (BigDecimal(@money) * BigDecimal((1 + tax_rate).to_s)).to_i
+  end
+
+  def calc_tax_excluded(tax_rate)
+    (BigDecimal(@money) / BigDecimal((1 + tax_rate).to_s)).to_i
   end
 end
