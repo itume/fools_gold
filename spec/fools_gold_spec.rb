@@ -25,7 +25,7 @@ RSpec.describe FoolsGold do
     let(:yen) {Yen.new(100)}
     context "2019年10月1日以前" do
       it "軽減税率が未施行であること" do
-        # allow(TaxDate).to receive(:today).and_return(Date.new(2019,9,30))
+        allow(TaxDate).to receive(:today).and_return(Date.new(2019,9,30))
         expect{yen.reduced_tax_rate}.to raise_error(UninforcedLawError)
       end
     end

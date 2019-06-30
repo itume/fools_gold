@@ -51,36 +51,87 @@ RSpec.describe FoolsGold do
       end
 
       describe "with_tax" do
-        it "課税状態でなければ課税した金額が返ること" do
-          expect(yen.with_tax).to eq(108)
+        context "2019年10月１日以前" do
+          let(:yen) {Yen.new(100)}
+          it "課税状態でなければ8%課税した金額が返ること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,9,30))
+            expect(yen.with_tax).to eq(108)
+          end
+
+          it "課税状態であればそのままの金額が返ること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,9,30))
+            yen.with_tax!
+            expect(yen.with_tax).to eq(100)
+          end
         end
 
-        it "課税状態であればそのままの金額が返ること" do
-          yen.with_tax!
-          expect(yen.with_tax).to eq(100)
+        context "2019年10月1日以降" do
+          let(:yen) {Yen.new(100)}
+          it "課税状態でなければ10%課税した金額が返ること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,10,1))
+            expect(yen.with_tax).to eq(110)
+          end
+
+          it "課税状態であればそのままの金額が返ること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,10,1))
+            yen.with_tax!
+            expect(yen.with_tax).to eq(100)
+          end
         end
       end
 
       describe "without_tax" do
-        let(:yen){Yen.new(108)}
-        it "課税状態であれば税抜き金額が返ること" do
-          yen.with_tax!
-          expect(yen.without_tax).to eq(100)
+        context "2019年10月１日以前" do
+          let(:yen){Yen.new(108)}
+          it "課税状態であれば8%税抜き金額が返ること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,9,30))
+            yen.with_tax!
+            expect(yen.without_tax).to eq(100)
+          end
+
+          it "課税状態でなければそのままの金額が返ること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,9,30))
+            expect(yen.without_tax).to eq(108)
+          end
         end
 
-        it "課税状態でなければそのままの金額が返ること" do
-          expect(yen.without_tax).to eq(108)
+        context "2019年10月1日以降" do
+          let(:yen){Yen.new(110)}
+          it "課税状態であれば10%税抜き金額が返ること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,10,1))
+            yen.with_tax!
+            expect(yen.without_tax).to eq(100)
+          end
+
+          it "課税状態でなければそのままの金額が返ること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,10,1))
+            expect(yen.without_tax).to eq(110)
+          end
         end
       end
+    end
 
+    describe "reduced tax" do
       describe "with_reduced_tax" do
-        it "課税状態でなければ軽減税率で課税した金額が返ること" do
-          expect(yen.with_reduced_tax).to eq(108)
+        context "2019年10月１日以前" do
+          let(:yen) {Yen.new(100)}
+          it "新法施行前のためエラーになること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,9,30))
+            expect{yen.with_reduced_tax}.to raise_error(UninforcedLawError)
+          end
         end
+        context "2019年10月１日以降" do
+          let(:yen) {Yen.new(100)}
+          it "課税状態でなければ8%の軽減税率で課税した金額が返ること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,10,1))
+            expect(yen.with_reduced_tax).to eq(108)
+          end
 
-        it "課税状態であればそのままの金額が返ること" do
-          yen.with_tax!
-          expect(yen.with_reduced_tax).to eq(100)
+          it "課税状態であればそのままの金額が返ること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,10,1))
+            yen.with_tax!
+            expect(yen.with_reduced_tax).to eq(100)
+          end
         end
       end
     end
