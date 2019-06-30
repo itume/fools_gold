@@ -22,7 +22,6 @@ class Yen
   end
 
   def with_tax
-    return @money if @with_tax
     calc_tax_included(@tax.tax_rate)
   end
 
@@ -36,22 +35,28 @@ class Yen
   end
 
   def without_tax
-    return @money unless @with_tax
     calc_tax_excluded(@tax.tax_rate)
   end
 
   def with_reduced_tax
-    return @money if @with_tax
+    raise UninforcedLawError unless TaxDate.day_of_raise_10_percent?
     calc_tax_included(@tax.reduced_tax_rate)
+  end
+
+  def without_reduced_tax
+    raise UninforcedLawError unless TaxDate.day_of_raise_10_percent?
+    calc_tax_excluded(@tax.reduced_tax_rate)
   end
 
   private
 
   def calc_tax_included(tax_rate)
+    return @money if @with_tax
     (BigDecimal(@money) * BigDecimal((1 + tax_rate).to_s)).to_i
   end
 
   def calc_tax_excluded(tax_rate)
+    return @money unless @with_tax
     (BigDecimal(@money) / BigDecimal((1 + tax_rate).to_s)).to_i
   end
 end

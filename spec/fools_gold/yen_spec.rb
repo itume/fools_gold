@@ -134,6 +134,30 @@ RSpec.describe FoolsGold do
           end
         end
       end
+
+      describe "without_reduced_tax" do
+        context "2019年10月１日以前" do
+          let(:yen) {Yen.new(108)}
+          it "新法施行前のためエラーになること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,9,30))
+            yen.with_tax!
+            expect{yen.without_reduced_tax}.to raise_error(UninforcedLawError)
+          end
+        end
+        context "2019年10月１日以降" do
+          let(:yen) {Yen.new(108)}
+          it "課税状態であれば8%軽減税率の税抜き金額が返ること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,10,1))
+            yen.with_tax!
+            expect(yen.without_reduced_tax).to eq(100)
+          end
+
+          it "課税状態でなければそのままの金額が返ること" do
+            allow(TaxDate).to receive(:today).and_return(Date.new(2019,10,1))
+            expect(yen.without_reduced_tax).to eq(108)
+          end
+        end
+      end
     end
   end
 end
