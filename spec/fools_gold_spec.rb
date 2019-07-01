@@ -8,7 +8,6 @@ RSpec.describe FoolsGold do
       class Settings < Settingslogic
         require "tempfile"
         text = <<-EOS
-        defaults: &defaults
         row_inforced: true
         EOS
         tf = Tempfile.new("test.yaml")
