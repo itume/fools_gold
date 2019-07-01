@@ -2,7 +2,7 @@ require 'date'
 module TaxDate
 
   def day_of_raise_10_percent?
-    return true if Object.const_defined?('Settings') && Settings.row_inforced
+    return true if Object.const_defined?('MyTaxLaw') && MyTaxLaw.inforced_201910
     today >= day_of_raise_10_percent
   end
 
